@@ -1,0 +1,16 @@
+{
+  "name": "coursework2_m00791121",
+  "version": "1.0.0",
+  "description": "This repository has all the code for coursework 1.",
+  "main": "activities.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Reia Menezes",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongodb": "^3.6.6"
+  }
+}
