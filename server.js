@@ -2,6 +2,24 @@ const express = require('express');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
+const path = require('path');
+
+// var apiRouter = require("./routes/api_router");
+
+var staticPath = path.resolve(__dirname, "static");
+app.use(express.static(staticPath));
+// app.use("/api", apiRouter);
+
+var publicPath = path.resolve(__dirname, "public");
+var imagePath = path.resolve(__dirname, "images");
+
+app.use('/public', express.static(publicPath));
+app.use('/images', express.static(imagePath));
+app.use(function (req, res, next) {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("This image does not exist in the images folder.")
+    next();
+});
 
 app.use(express.json());
 
@@ -19,8 +37,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve lesson images from the 'lesson-images' directory
-app.use('/coursework2/images', express.static('coursework2-images'));
+// Serve lesson images from the 'coursework2/images' directory
+app.use('/coursework2/images', express.static('coursework2/images'));
 
 // Setting the port
 app.set('port', 4000);
@@ -73,15 +91,6 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
     );
 });
 
-// app.delete('/collection/cart/:id', (req, res, next) => {
-//     req.collection.deleteOne(
-//         { _id: new ObjectId(req.params.id) },
-//         (err, result) => {
-//             if (err) return next(err);
-//             res.send((result.result.n === 1) ? { msg: 'success' } : { msg: 'error' });
-//         }
-//     );
-// });
 
 app.get('/search', async (req, res) => {
     const searchTerm = req.query.q;
