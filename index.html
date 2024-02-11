@@ -15,7 +15,7 @@
     <div id="app">
         <header>
             <h1 v-text="sitename"></h1>
-            <input type="text" v-model="search" placeholder="Search">
+            <input type="text" v-model="search" @input="searchLessons(search)" placeholder="Search">
             <!--binds and links the input to the vue instance for seach -->
             <div class="sort">
                 <label for="sortSelect">Sort by:</label>
@@ -128,24 +128,6 @@
                 });
         }
 
-        // Function to fetch orders
-        function fetchOrders() {
-            fetch('http://localhost:4000/orders')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch orders');
-                    }
-                    return response.json();
-                })
-                .then(orders => {
-                    console.log('Fetched orders:', orders);
-                    // Update UI to display orders to the user
-                })
-                .catch(error => {
-                    console.error('Error fetching orders:', error);
-                    // Handle error (e.g., show error message to user)
-                });
-        }
 
         let webstore = new Vue({
             el: "#app",
@@ -179,28 +161,6 @@
                 )
             },
             methods: {
-                // removeFromCart: function (cartItem) {
-                //     const itemId = cartItem.id;
-                //     fetch(`http://localhost:4000/collection/cart/${itemId}`, {
-                //         method: 'DELETE'
-                //     })
-                //         .then(response => {
-                //             if (response.ok) {
-                //                 // Item removed from cart successfully
-                //                 // Remove the item from the local cartItems array
-                //                 const index = this.cartItems.findIndex(item => item.id === cartItem.id);
-                //                 if (index !== -1) {
-                //                     this.cartItems.splice(index, 1);
-                //                 }
-                //                 console.log('Item removed from cart successfully');
-                //             } else {
-                //                 console.log('Failed to remove item from cart');
-                //             }
-                //         })
-                //         .catch(error => {
-                //             console.error('Error removing item from cart:', error);
-                //         });
-                // },
                 sortProducts() {
                     let activitiesArray = this.activities.slice(0);
 
@@ -309,10 +269,13 @@
                         .then(results => {
                             // Handle the search results (update UI, etc.)
                             console.log(results);
+                            // Assuming you have an activities array in your data
+                            this.activities = results.results; // Update activities with search results
                         })
                         .catch(error => {
                             console.error('Error searching for lessons:', error);
                         });
+
 
                 },
                 submitForm() {
@@ -333,7 +296,7 @@
                             if (response.ok) {
                                 console.log('Order placed successfully!');
                                 this.cartItems = [];
-                                this.updateInventory(); // Call the updateInventory method after placing the order
+                                this.updateInventory(order); // Call the updateInventory method after placing the order
                                 return response.json();
                             } else {
                                 throw new Error('Failed to place order');
@@ -345,31 +308,48 @@
                         .catch(error => {
                             console.error('Error placing order:', error);
                         });
+
                 },
-
-                updateInventory() {
-                    this.cartItems.forEach(cartItem => {
-                        const activityId = cartItem._id; // Use _id instead of id
-                        fetch(`http://localhost:4000/collection/lessons/${activityId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                availableInventory: cartItem.availableInventory - 1
+                getLessonById(id) {
+                    // Assuming you have lessons stored in the 'activities' array
+                    return this.activities.find(activity => activity.id === id);
+                },
+                updateInventory(order) {
+                    order.cartItems.forEach(cartItem => {
+                        const activityId = cartItem.id;
+                        const activityToUpdate = this.getLessonById(activityId);
+                        if (activityToUpdate) {
+                            fetch(`http://localhost:4000/collection/lessons/${activityId}/updateAvailability`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    availableSpaces: activityToUpdate.availableSpaces - 1 // Assuming availableSpaces is decremented by 1
+                                })
                             })
-                        })
-                        // ... (the rest of the method)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to update inventory');
+                                    }
+                                    console.log('Inventory updated successfully');
+                                })
+                                .catch(error => {
+                                    console.error('Error updating inventory:', error);
+                                });
+                        }
                     });
-                }
 
+                }
 
             },
 
-
             computed: {
-                cartItemCount: function () {
-                    return this.cart.length || '';
+                cartItemCount: {
+                    get() {
+                        return this.cart.length || '';
+                    },
+                    set(value) { }
                 },
                 isFormValid: function () {
                     return this.order.name && this.order.number;
