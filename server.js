@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 
 // Define CORS options for the cors package
 const corsOptions = {
-    origin: '/coursework2/index.https://reiamenezes2004.github.io/coursework2/', // Update with your frontend origin
+    origin: 'https://reiamenezes2004.github.io/coursework2/', // Update with your frontend origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
