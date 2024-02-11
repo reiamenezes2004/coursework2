@@ -286,7 +286,7 @@
                     };
 
                     fetch(`http://localhost:4000/orders`, {
-                        method: 'POST',
+                        method: 'POST', // Use PUT method
                         headers: {
                             'Content-Type': 'application/json',
                         },
@@ -308,6 +308,7 @@
                         .catch(error => {
                             console.error('Error placing order:', error);
                         });
+
 
                 },
                 getLessonById(id) {
@@ -365,6 +366,8 @@
             },
             created() {
                 this.sortProducts();
+                this.updateInventory = this.updateInventory.bind(this);
+
             },
             watch: {
                 search: 'sortProducts',
