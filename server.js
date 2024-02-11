@@ -6,21 +6,6 @@ const path = require('path');
 
 // var apiRouter = require("./routes/api_router");
 
-var staticPath = path.resolve(__dirname, "static");
-app.use(express.static(staticPath));
-// app.use("/api", apiRouter);
-
-var publicPath = path.resolve(__dirname, "public");
-var imagePath = path.resolve(__dirname, "images");
-
-app.use('/public', express.static(publicPath));
-app.use('/images', express.static(imagePath));
-app.use(function (req, res, next) {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("This image does not exist in the images folder.")
-    next();
-});
-
 app.use(express.json());
 
 // Logger middleware function
@@ -92,26 +77,26 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
 });
 
 
-app.get('/search', async (req, res) => {
-    const searchTerm = req.query.q;
+// app.get('/search', async (req, res) => {
+//     const searchTerm = req.query.q;
 
-    if (!searchTerm) {
-        return res.status(400).json({ error: 'Please provide a search term' });
-    }
+//     if (!searchTerm) {
+//         return res.status(400).json({ error: 'Please provide a search term' });
+//     }
 
-    try {
-        const searchResults = await db.collection('lessons').find({
-            $or: [
-                { title: { $regex: searchTerm, $options: 'i' } },
-                { location: { $regex: searchTerm, $options: 'i' } }
-            ]
-        }).toArray();
-        res.status(200).json({ results: searchResults });
-    } catch (error) {
-        console.error('Error searching for lessons:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
+//     try {
+//         const searchResults = await db.collection('lessons').find({
+//             $or: [
+//                 { title: { $regex: searchTerm, $options: 'i' } },
+//                 { location: { $regex: searchTerm, $options: 'i' } }
+//             ]
+//         }).toArray();
+//         res.status(200).json({ results: searchResults });
+//     } catch (error) {
+//         console.error('Error searching for lessons:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// });
 
 app.post('/orders', (req, res) => {
     const order = req.body;
@@ -136,15 +121,61 @@ app.post('/orders', (req, res) => {
 app.put('/collection/lessons/:id', (req, res, next) => {
     const updatedInventory = req.body.availableInventory;
 
-    db.collection('lessons').update(
+    db.collection('lessons').updateOne(
         { _id: new ObjectId(req.params.id) },
-        { $inc: { availableInventory: -updatedInventory } },
+        { $inc: { availableInventory: -1 } },
         (err, result) => {
-            if (err) return next(err);
-            res.send((result.modifiedCount === 1) ? { msg: 'success' } : { msg: 'error' });
+            if (err) {
+                console.error('Error updating inventory:', err);
+                res.status(500).json({ error: 'Error updating inventory' });
+                return;
+            }
+            if (result.modifiedCount === 1) {
+                console.log('Inventory updated successfully');
+                res.status(200).json({ msg: 'success' });
+            } else {
+                console.log('Failed to update inventory');
+                res.status(404).json({ error: 'Failed to update inventory' });
+            }
         }
     );
 });
+
+
+const searchLessons = async (searchTerm) => {
+    try {
+        const response = await fetch(`/search?q=${searchTerm}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const results = await response.json();
+        console.log(results); // Handle the search results (update UI, etc.)
+    } catch (error) {
+        console.error('Error searching for lessons:', error);
+    }
+};
+
+app.get('/search', async (req, res) => {
+    const searchTerm = req.query.q;
+
+    if (!searchTerm) {
+        return res.status(400).json({ error: 'Please provide a search term' });
+    }
+
+    try {
+        const searchResults = await db.collection('lessons').find({
+            $or: [
+                { title: { $regex: searchTerm, $options: 'i' } },
+                { location: { $regex: searchTerm, $options: 'i' } }
+            ]
+        }).toArray();
+        res.status(200).json({ results: searchResults });
+    } catch (error) {
+        console.error('Error searching for lessons:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 
 
@@ -154,6 +185,8 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
         res.send(result);
     });
 });
+
+
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
