@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "65c126edab08f4f9b2951263"
+  },
+  "id": 1002,
+  "title": "Dance",
+  "location": "Location: Al Khail",
+  "price": 120,
+  "image": "../static/images/dance.jpg",
+  "availableInventory": 5,
+  "rating": 3
+},
+{
+  "_id": {
+    "$oid": "65c126fbab08f4f9b2951265"
+  },
+  "id": 1003,
+  "title": "Gymnastics",
+  "location": "Location: Muhaisnah",
+  "price": 120,
+  "image": "../static/images/gymnastics.jpg",
+  "availableInventory": 5,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "65c12709ab08f4f9b2951267"
+  },
+  "id": 1004,
+  "title": "Art",
+  "location": "Location: Mirdif",
+  "price": 100,
+  "image": "../static/images/art.jpg",
+  "availableInventory": 5,
+  "rating": 4
+},
+{
+  "_id": {
+    "$oid": "65c12718ab08f4f9b2951269"
+  },
+  "id": 1005,
+  "title": "Tennis",
+  "location": "Location: Al Nahda",
+  "price": 130,
+  "image": "../static/images/tennis.jpg",
+  "availableInventory": 5,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "65c12725ab08f4f9b295126b"
+  },
+  "id": 1006,
+  "title": "Music",
+  "location": "Location: Muhaisnah",
+  "price": 120,
+  "image": "../static/images/music.jpg",
+  "availableInventory": 5,
+  "rating": 4
+},
+{
+  "_id": {
+    "$oid": "65c12731ab08f4f9b295126d"
+  },
+  "id": 1007,
+  "title": "Chess",
+  "location": "Location: Al Nahda",
+  "price": 115,
+  "image": "../static/images/chess.png",
+  "availableInventory": 5,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "65c1273eab08f4f9b295126f"
+  },
+  "id": 1008,
+  "title": "Soccer",
+  "location": "Location: Al Khail",
+  "price": 120,
+  "image": "../static/images/soccer.jpg",
+  "availableInventory": 5,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "65c1274cab08f4f9b2951271"
+  },
+  "id": 1009,
+  "title": "Theatre",
+  "location": "Location: Al Quoz",
+  "price": 140,
+  "image": "../static/images/theatre.JPG",
+  "availableInventory": 4,
+  "rating": 3
+},
+{
+  "_id": {
+    "$oid": "65c1275bab08f4f9b2951273"
+  },
+  "id": 1010,
+  "title": "Karate",
+  "location": "Location: Mirdif",
+  "price": 150,
+  "image": "../static/images/karate.png",
+  "availableInventory": 5,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "65c3372de7b277150ac5c8ff"
+  },
+  "id": 1001,
+  "title": "Cricket",
+  "location": "Location: Al Quoz",
+  "price": 130,
+  "image": "../static/images/cricket.jpg",
+  "availableInventory": 5,
+  "rating": 5
+}]
