@@ -13,6 +13,22 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+var staticPath = path.resolve(__dirname, "static");
+app.use(express.static(staticPath));
+// app.use("/api", apiRouter);
+
+
+var publicPath = path.resolve(__dirname, "public");
+var imagePath = path.resolve(__dirname, "images");
+
+app.use('/public', express.static(publicPath));
+app.use('/images', express.static(imagePath));
+app.use(function(req, res, next) {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("This image does not exist.")
+    next();
+});
+
 
 // CORS middleware
 app.use((req, res, next) => {
@@ -109,22 +125,14 @@ app.put('/collection/lessons/:id', (req, res, next) => {
     );
 });
 
-var staticPath = path.resolve(__dirname, "static");
-app.use(express.static(staticPath));
-// app.use("/api", apiRouter);
 
-
-var publicPath = path.resolve(__dirname, "public");
-var imagePath = path.resolve(__dirname, "images");
-
-app.use('/public', express.static(publicPath));
-app.use('/images', express.static(imagePath));
-app.use(function(req, res, next) {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("This image does not exist.")
-    next();
+// Add an OPTIONS route to handle preflight requests for CORS
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.send();
 });
-
 
 
 const searchLessons = async (searchTerm) => {
@@ -160,6 +168,7 @@ app.get('/search', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 
 
