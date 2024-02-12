@@ -4,8 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
 const path = require('path');
 
-// var apiRouter = require("./routes/api_router");
-
 
 // Logger middleware function
 app.use((req, res, next) => {
@@ -15,6 +13,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+
 // CORS middleware
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,11 +22,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve lesson images from the 'coursework2/images' directory
-app.use('/coursework2/images', express.static('coursework2/images'));
 
-// Setting the port
-// app.set('port', 4000);
+
+// Serve lesson images from the 'coursework2/images' directory
+// app.use('/coursework2/images', express.static('coursework2/images'));
+
 
 let db;
 
@@ -66,38 +65,6 @@ app.post('/collection/:collectionName', (req, res, next) => {
     });
 });
 
-// app.put('/collection/:collectionName/:id', (req, res, next) => {
-//     req.collection.updateOne(
-//         { _id: new ObjectId(req.params.id) },
-//         { $set: req.body },
-//         (err, result) => {
-//             if (err) return next(err);
-//             res.send((result.result.n === 1) ? { msg: 'success' } : { msg: 'error' });
-//         }
-//     );
-// });
-
-
-// app.get('/search', async (req, res) => {
-//     const searchTerm = req.query.q;
-
-//     if (!searchTerm) {
-//         return res.status(400).json({ error: 'Please provide a search term' });
-//     }
-
-//     try {
-//         const searchResults = await db.collection('lessons').find({
-//             $or: [
-//                 { title: { $regex: searchTerm, $options: 'i' } },
-//                 { location: { $regex: searchTerm, $options: 'i' } }
-//             ]
-//         }).toArray();
-//         res.status(200).json({ results: searchResults });
-//     } catch (error) {
-//         console.error('Error searching for lessons:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
 
 app.post('/orders', (req, res) => {
     const order = req.body;
@@ -141,6 +108,23 @@ app.put('/collection/lessons/:id', (req, res, next) => {
         }
     );
 });
+
+var staticPath = path.resolve(__dirname, "static");
+app.use(express.static(staticPath));
+// app.use("/api", apiRouter);
+
+
+var publicPath = path.resolve(__dirname, "public");
+var imagePath = path.resolve(__dirname, "images");
+
+app.use('/public', express.static(publicPath));
+app.use('/images', express.static(imagePath));
+app.use(function(req, res, next) {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("This image does not exist.")
+    next();
+});
+
 
 
 const searchLessons = async (searchTerm) => {
