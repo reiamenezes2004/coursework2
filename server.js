@@ -13,6 +13,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+
 // CORS middleware
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,8 +22,11 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
+
 // Serve lesson images from the 'coursework2/images' directory
-app.use('/coursework2/static/images', express.static('coursework2/static/images'));
+// app.use('/coursework2/images', express.static('coursework2/images'));
 
 
 let db;
@@ -105,6 +109,23 @@ app.put('/collection/lessons/:id', (req, res, next) => {
         }
     );
 });
+
+var staticPath = path.resolve(__dirname, "static");
+app.use(express.static(staticPath));
+// app.use("/api", apiRouter);
+
+
+var publicPath = path.resolve(__dirname, "public");
+var imagePath = path.resolve(__dirname, "images");
+
+app.use('/public', express.static(publicPath));
+app.use('/images', express.static(imagePath));
+app.use(function(req, res, next) {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("This image does not exist.")
+    next();
+});
+
 
 
 const searchLessons = async (searchTerm) => {
