@@ -8,6 +8,8 @@ GitHub Pages Link : https://reiamenezes2004.github.io/coursework2/
 
 AWS Links:
 
+http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/
+
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/cart
