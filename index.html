@@ -102,7 +102,6 @@
     </main>
     </div>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js"></script>
     <script type="text/javascript">
 
         function placeOrder(order) {
@@ -148,19 +147,32 @@
                 cartItems: [],
             },
 
-            created: function () {
-                console.log("requesting data from server");
-                fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons').then(
-                    function (response) {
-                        response.json().then(
-                            function (json) {
-                                webstore.products = json;
-                                console.log(json);
-                            });
 
-                    }
-                )
+            
+            created: function () {
+                console.log("Requesting data from server");
+                fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch activities data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.activities = data;
+                        this.sortProducts(); // Call sortProducts after activities data is fetched
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching activities data:', error);
+                    });
+
+
+
+
             },
+
+            
             methods: {
                 sortProducts() {
                     let activitiesArray = this.activities.slice(0);
@@ -259,24 +271,31 @@
                         this.cartItemCount = this.cart.length;
                     })
                 },
+
                 searchLessons(searchTerm) {
-                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/search?q=${searchTerm}`)
+                    // Check if the search term is empty
+                    if (!searchTerm.trim()) {
+                        // Handle empty search term (e.g., reset activities)
+                        this.activities = [];
+                        return;
+                    }
+
+                    // Make the request to the server only if the search term is not empty
+                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/search?q=${searchTerm}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
                             }
                             return response.json();
                         })
-                        .then(results => {
-                            // Handle the search results (update UI, etc.)
-                            console.log(results);
-                            // Assuming you have an activities array in your data
-                            this.activities = results.results; // Update activities with search results
+                        .then(data => {
+                            // Handle the response data
+                            console.log(data);
+                            // Update activities or perform other actions with the response
                         })
                         .catch(error => {
                             console.error('Error searching for lessons:', error);
                         });
-
 
                 },
                 submitForm() {
