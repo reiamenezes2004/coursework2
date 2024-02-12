@@ -4,6 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
 const path = require('path');
 
+app.use(express.json());
+
 
 // Logger middleware function
 app.use((req, res, next) => {
@@ -11,7 +13,6 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware function
 });
 
-app.use(express.json());
 
 var staticPath = path.resolve(__dirname, "static");
 app.use(express.static(staticPath));
@@ -126,14 +127,6 @@ app.put('/collection/lessons/:id', (req, res, next) => {
 });
 
 
-// // Add an OPTIONS route to handle preflight requests for CORS
-// app.options('*', (req, res) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//     res.send();
-// });
-
 
 const searchLessons = async (searchTerm) => {
     try {
@@ -179,6 +172,11 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
     });
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 
 const port = process.env.PORT || 4000;
