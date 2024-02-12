@@ -154,7 +154,7 @@ app.get('/search', async (req, res) => {
                 { location: { $regex: searchTerm, $options: 'i' } }
             ]
         }).toArray();
-        res.status(200).json({ results: searchResults });
+        res.status(200).json(searchResults); // Respond with an array of search results directly
     } catch (error) {
         console.error('Error searching for lessons:', error);
         res.status(500).json({ error: 'Internal server error' });
