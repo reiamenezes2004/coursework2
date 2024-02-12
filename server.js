@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware function
 });
 
-// app.use(express.json());
+app.use(express.json());
 
 // CORS middleware
 app.use((req, res, next) => {
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use('/coursework2/images', express.static('coursework2/images'));
 
 // Setting the port
-app.set('port', 4000);
+// app.set('port', 4000);
 
 let db;
 
@@ -66,16 +66,16 @@ app.post('/collection/:collectionName', (req, res, next) => {
     });
 });
 
-app.put('/collection/:collectionName/:id', (req, res, next) => {
-    req.collection.updateOne(
-        { _id: new ObjectId(req.params.id) },
-        { $set: req.body },
-        (err, result) => {
-            if (err) return next(err);
-            res.send((result.result.n === 1) ? { msg: 'success' } : { msg: 'error' });
-        }
-    );
-});
+// app.put('/collection/:collectionName/:id', (req, res, next) => {
+//     req.collection.updateOne(
+//         { _id: new ObjectId(req.params.id) },
+//         { $set: req.body },
+//         (err, result) => {
+//             if (err) return next(err);
+//             res.send((result.result.n === 1) ? { msg: 'success' } : { msg: 'error' });
+//         }
+//     );
+// });
 
 
 // app.get('/search', async (req, res) => {
