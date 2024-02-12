@@ -13,9 +13,6 @@ http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons
 http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/cart
-http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/search?q=${searchTerm}
-http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders
-http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons/${activityId}/updateAvailability
 
 
 # coursework1
