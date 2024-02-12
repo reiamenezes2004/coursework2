@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 
 
 
-
 // Serve lesson images from the 'coursework2/images' directory
 // app.use('/coursework2/images', express.static('coursework2/images'));
 

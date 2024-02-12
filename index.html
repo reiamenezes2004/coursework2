@@ -148,7 +148,7 @@
             },
 
 
-
+            
             created: function () {
                 console.log("Requesting data from server");
                 fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons')
@@ -172,7 +172,7 @@
 
             },
 
-
+            
             methods: {
                 sortProducts() {
                     let activitiesArray = this.activities.slice(0);
@@ -273,6 +273,13 @@
                 },
 
                 searchLessons(searchTerm) {
+                    // Check if the search term is empty
+                    if (!searchTerm.trim()) {
+                        // Handle empty search term (e.g., reset activities)
+                        this.activities = [];
+                        return;
+                    }
+
                     // Make the request to the server only if the search term is not empty
                     fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/search?q=${searchTerm}`)
                         .then(response => {
@@ -289,6 +296,7 @@
                         .catch(error => {
                             console.error('Error searching for lessons:', error);
                         });
+
                 },
 
                 submitForm() {
