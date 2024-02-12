@@ -102,11 +102,11 @@
     </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js"></script> -->
     <script type="text/javascript">
 
         function placeOrder(order) {
-            fetch('http://localhost:4000/orders', {
+            fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,7 +150,7 @@
 
             created: function () {
                 console.log("requesting data from server");
-                fetch('http://localhost:4000/collection/lessons').then(
+                fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/lessons').then(
                     function (response) {
                         response.json().then(
                             function (json) {
@@ -216,7 +216,7 @@
                         activity.availableInventory--;
 
                         // Send a POST request to the server to update the database
-                        fetch(`http://localhost:4000/collection/cart`, {
+                        fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/cart`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -260,7 +260,7 @@
                     })
                 },
                 searchLessons(searchTerm) {
-                    fetch(`http://localhost:4000/search?q=${searchTerm}`)
+                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/search?q=${searchTerm}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
@@ -286,7 +286,7 @@
                         cartItems: this.cartItems,
                     };
 
-                    fetch(`http://localhost:4000/orders`, {
+                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/orders`, {
                         method: 'POST', // Use PUT method
                         headers: {
                             'Content-Type': 'application/json',
@@ -321,7 +321,7 @@
                         const activityId = cartItem.id;
                         const activityToUpdate = this.getLessonById(activityId);
                         if (activityToUpdate) {
-                            fetch(`http://localhost:4000/collection/lessons/${activityId}/updateAvailability`, {
+                            fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons/${activityId}/updateAvailability`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
