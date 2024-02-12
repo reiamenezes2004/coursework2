@@ -3,6 +3,7 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
 const path = require('path');
+const cors = require('cors');
 
 // Middleware
 app.use(express.json());
@@ -19,15 +20,13 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware function
 });
 
-
 // CORS middleware
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-
+const corsOptions = {
+    origin: 'https://reiamenezes2004.github.io', // Update with your frontend origin
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+};
+app.use(cors(corsOptions));
 
 let db;
 
@@ -39,7 +38,6 @@ MongoClient.connect('mongodb+srv://reia2004:reia1326@cluster0.ykxntib.mongodb.ne
     console.log('Connected to MongoDB');
     db = client.db('afterschoolactivities');
 });
-
 
 app.get('/', (req, res) => {
     res.send('Select a collection, e.g., /collection/messages');
@@ -57,11 +55,6 @@ app.get('/collection/:collectionName', (req, res, next) => {
     });
 });
 
-
-const cartUrl = 'https://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/cart';
-const ordersUrl = 'https://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders';
-
-
 app.post('/collection/:collectionName', (req, res, next) => {
     req.collection.insertOne(req.body, (err, result) => {
         if (err) {
@@ -71,7 +64,6 @@ app.post('/collection/:collectionName', (req, res, next) => {
         res.status(200).json({ message: "Item added to cart successfully" });
     });
 });
-
 
 app.post('/orders', (req, res) => {
     const order = req.body;
@@ -130,45 +122,6 @@ app.put('/orders', (req, res) => {
     console.log('Order placed successfully');
     return res.status(200).json({ message: 'Order placed successfully' });
 });
-
-
-const searchLessons = async (searchTerm) => {
-    try {
-        const response = await fetch(`/search?q=${searchTerm}`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const results = await response.json();
-        console.log(results); // Handle the search results (update UI, etc.)
-    } catch (error) {
-        console.error('Error searching for lessons:', error);
-    }
-};
-
-
-app.get('/search', async (req, res) => {
-    const searchTerm = req.query.q;
-
-    if (!searchTerm) {
-        return res.status(400).json({ error: 'Please provide a search term' });
-    }
-
-    try {
-        const searchResults = await db.collection('lessons').find({
-            $or: [
-                { title: { $regex: searchTerm, $options: 'i' } },
-                { location: { $regex: searchTerm, $options: 'i' } }
-            ]
-        }).toArray();
-        res.status(200).json({ results: searchResults });
-    } catch (error) {
-        console.error('Error searching for lessons:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-
-
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
