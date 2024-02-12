@@ -4,8 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
 const path = require('path');
 
-// var apiRouter = require("./routes/api_router");
-
 
 // Logger middleware function
 app.use((req, res, next) => {
@@ -13,7 +11,7 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware function
 });
 
-// app.use(express.json());
+app.use(express.json());
 
 // CORS middleware
 app.use((req, res, next) => {
@@ -24,10 +22,8 @@ app.use((req, res, next) => {
 });
 
 // Serve lesson images from the 'coursework2/images' directory
-app.use('/coursework2/images', express.static('coursework2/images'));
+app.use('/coursework2/static/images', express.static('coursework2/static/images'));
 
-// Setting the port
-app.set('port', 4000);
 
 let db;
 
@@ -66,38 +62,6 @@ app.post('/collection/:collectionName', (req, res, next) => {
     });
 });
 
-app.put('/collection/:collectionName/:id', (req, res, next) => {
-    req.collection.updateOne(
-        { _id: new ObjectId(req.params.id) },
-        { $set: req.body },
-        (err, result) => {
-            if (err) return next(err);
-            res.send((result.result.n === 1) ? { msg: 'success' } : { msg: 'error' });
-        }
-    );
-});
-
-
-// app.get('/search', async (req, res) => {
-//     const searchTerm = req.query.q;
-
-//     if (!searchTerm) {
-//         return res.status(400).json({ error: 'Please provide a search term' });
-//     }
-
-//     try {
-//         const searchResults = await db.collection('lessons').find({
-//             $or: [
-//                 { title: { $regex: searchTerm, $options: 'i' } },
-//                 { location: { $regex: searchTerm, $options: 'i' } }
-//             ]
-//         }).toArray();
-//         res.status(200).json({ results: searchResults });
-//     } catch (error) {
-//         console.error('Error searching for lessons:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
 
 app.post('/orders', (req, res) => {
     const order = req.body;
