@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "5e616bb1-22f5-4c56-81f1-c4ac47764e74",
+		"name": "coursework2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26623237"
+	},
+	"item": [
+		{
+			"name": "displaying all the lessons",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/collection/lessons",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"collection",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "saving a new order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Reia\",\r\n    \"number\": \"0525665080\",\r\n    \"cartItems\": [\r\n        {\r\n                \"title\": \"Maths\"        },\r\n         {\r\n                \"title\": \"Science\"\r\n        }\r\n    ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updating the inventory",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/collection/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"collection",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "images",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
