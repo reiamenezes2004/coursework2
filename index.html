@@ -3,7 +3,7 @@
 
 <head>
     <title>After School Activities</title>
-    <link rel="logo" type="image/png" href="../coursework1_M00791121/images/logo.png">
+    <link rel="logo" type="image/png" href="../coursework1_M00791121/static/images/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="activities.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -106,7 +106,7 @@
     <script type="text/javascript">
 
         function placeOrder(order) {
-            fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/orders', {
+            fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,7 +150,7 @@
 
             created: function () {
                 console.log("requesting data from server");
-                fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/lessons').then(
+                fetch('http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/lessons').then(
                     function (response) {
                         response.json().then(
                             function (json) {
@@ -216,7 +216,7 @@
                         activity.availableInventory--;
 
                         // Send a POST request to the server to update the database
-                        fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/cart`, {
+                        fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/cart`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -260,7 +260,7 @@
                     })
                 },
                 searchLessons(searchTerm) {
-                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/search?q=${searchTerm}`)
+                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/search?q=${searchTerm}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
@@ -286,7 +286,7 @@
                         cartItems: this.cartItems,
                     };
 
-                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/orders`, {
+                    fetch(`http://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders`, {
                         method: 'POST', // Use PUT method
                         headers: {
                             'Content-Type': 'application/json',

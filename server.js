@@ -3,10 +3,6 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const { ObjectId } = require('mongodb');
 const path = require('path');
-const cors = require('cors');
-
-
-// app.use(cors());
 
 // Middleware
 app.use(express.json());
@@ -26,22 +22,11 @@ app.use((req, res, next) => {
 
 // CORS middleware
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://reiamenezes2004.github.io/coursework2/');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-
-// Define CORS options for the cors package
-const corsOptions = {
-    origin: 'https://reiamenezes2004.github.io/coursework2/', // Update with your frontend origin
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-};
-
-// Enable CORS using the cors package with options
-app.use(cors(corsOptions));
 
 
 let db;
@@ -71,6 +56,10 @@ app.get('/collection/:collectionName', (req, res, next) => {
         res.send(results);
     });
 });
+
+
+const cartUrl = 'https://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/cart';
+const ordersUrl = 'https://finalcoursework2-env.eba-8jfitd26.eu-west-2.elasticbeanstalk.com/collection/orders';
 
 
 app.post('/collection/:collectionName', (req, res, next) => {
