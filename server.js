@@ -21,6 +21,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+const staticPath = path.resolve(__dirname, "static");
+app.use(express.static(staticPath));
 
 // Serve lesson images from the 'coursework2/images' directory
 // app.use('/coursework2/images', express.static('coursework2/images'));
