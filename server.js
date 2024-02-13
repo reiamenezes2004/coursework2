@@ -11,9 +11,6 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware function
 });
 
-app.use(express.json());
-
-
 // CORS middleware
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,6 +19,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
 
 
 // Serve lesson images from the 'coursework2/images' directory
